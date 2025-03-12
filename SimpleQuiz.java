@@ -15,19 +15,18 @@ public class SimpleQuiz {
         // Generate 5 random questions
         for (int i = 0; i < 5; i++) {
             int type = random.nextInt(3); // 0 = Math, 1 = Word Scramble, 2 = Trivia
-            
             if (type == 0) {
-                // TODO: Call a function to generate a math problem
-                // Store question and answer in questions[i] and answers[i]
-                
+                String[] math = generateMathProblem();
+                questions[i] = math[0];
+                answers[i] = math[1];
             } else if (type == 1) {
-                // TODO: Call a function to generate a word scramble
-                // Store question and answer in questions[i] and answers[i]
-                
+                String[] word = generateWordScramble();
+                questions[i] = word[0];
+                answers[i] = word[1];
             } else {
-                // TODO: Call a function to generate a trivia question
-                // Store question and answer in questions[i] and answers[i]
-                
+                String[] trivia = generateTriviaQuestion();
+                questions[i] = trivia[0];
+                answers[i] = trivia[1];
             }
         }
 
@@ -51,16 +50,18 @@ public class SimpleQuiz {
             System.out.println((i + 1) + ". " + questions[i]);
             System.out.println("Your answer: " + userAnswers[i]);
             System.out.println("Correct answer: " + answers[i]);
-            
-            // TODO: Compare user answer with correct answer and print Correct/Incorrect message
-            
+            if (userAnswers[i].equalsIgnoreCase(answers[i])) {
+                System.out.println(" Correct!");
+            } else {
+                System.out.println(" Incorrect!");
+            }
             System.out.println();
         }
 
         scanner.close();
     }
 
-    // TODO: Complete this function to generate a math problem (addition or multiplication)
+    // Generate a math problem (addition or multiplication)
     public static String[] generateMathProblem() {
         Random rand = new Random();
         int num1, num2;
@@ -81,22 +82,20 @@ public class SimpleQuiz {
         return new String[]{question, answer};
     }
 
-    // TODO: Complete this function to generate a scrambled word question
+    // Generate a scrambled word question
     public static String[] generateWordScramble() {
         try {
             String[] words = readFile("compWords.txt");
             Random rand = new Random();
             String answer = words[rand.nextInt(words.length)];
-            
-            // TODO: Call a function to scramble the word
-            
-            return new String[]{"Unscramble the following computer term: " /* + scrambled */, answer};
+            String scrambled = scrambleWord(answer);
+            return new String[]{"Unscramble the following computer term: " + scrambled, answer};
         } catch (IOException e) {
             return new String[]{"Error loading words.", "N/A"};
         }
     }
 
-    // TODO: Complete this function to generate a trivia question
+    // Generate a trivia question
     public static String[] generateTriviaQuestion() {
         try {
             String[] lines = readFile("trivia.txt");
@@ -114,9 +113,16 @@ public class SimpleQuiz {
         return br.lines().toArray(String[]::new);
     }
 
-    // TODO: Complete this function to scramble a word
+    // Scramble a word
     public static String scrambleWord(String word) {
-        // TODO: Implement word scrambling logic
-        return word; // Return scrambled version of the word
+        char[] chars = word.toCharArray();
+        Random rand = new Random();
+        for (int i = 0; i < chars.length; i++) {
+            int swapIndex = rand.nextInt(chars.length);
+            char temp = chars[i];
+            chars[i] = chars[swapIndex];
+            chars[swapIndex] = temp;
+        }
+        return new String(chars);
     }
 }
