@@ -1,0 +1,10 @@
+computer
+keyboard
+monitor
+mouse
+digital
+laptop
+hardware
+software
+network
+internet
